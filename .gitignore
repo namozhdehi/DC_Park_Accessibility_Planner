@@ -1,3 +1,4 @@
+
 # ArcGIS Pro temporary and lock files
 *.lock
 *.sr.lock
@@ -17,6 +18,7 @@ Desktop.ini
 Index/
 Temp/
 History/
+.backups/
 
 # Large/raw GIS data
 data/raw/
@@ -27,6 +29,20 @@ data/processed/
 
 # ArcGIS Pro backups
 *.aprx.backup
+*.aprx.xml
+*.atbx.xml
 
+# ArcGIS generated files
 GpMessages/
 ImportLog/
+*.freelist
+
+# Python virtual environments
+.venv/
+venv/
+
+
+# Original ArcGIS Pro working project (keep locally)
+# Portfolio copies are stored in arcgis_pro/ and modelbuilder/
+arcgis_pro/DC_Park_Accessibility_Planner/
+
