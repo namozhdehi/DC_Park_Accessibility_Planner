@@ -4,13 +4,11 @@
 
 A reproducible GIS screening project identifying Washington, DC census block groups entirely outside an 800-meter straight-line buffer of existing usable parks, then ranking populated underserved areas by population density and proximity to parks.
 
-**Tools:** ArcGIS Pro · ModelBuilder · ArcPy (planned extension) · GIS geoprocessing · U.S. Census/ACS data · GitHub
+**Tools:** ArcGIS Pro · ModelBuilder · ArcPy · Python · Pandas · GIS geoprocessing · U.S. Census/ACS data · GitHub
 
 ## Final Map
 
 ![Washington, DC park accessibility and priority map](outputs/DC_Park_Accessibility_Final.png)
-
-> **Image setup:** Update the filename in the link above to match the actual PNG in `outputs/` if different.
 
 ## At a Glance
 
@@ -22,7 +20,7 @@ A reproducible GIS screening project identifying Washington, DC census block gro
 | Block groups entirely outside 800 m park buffers | 6 |
 | Residents in those six block groups | 4,237 |
 | Populated underserved areas ranked | 4 |
-| Priority score weights | 70% population density / 30% park distance |
+| Priority score weights | 60% population density / 40% park distance |
 
 **Interpretation:** The 4,237 figure is the total population of six block groups entirely outside the buffers, not a person-level count derived from walking routes. The four priority points are representative locations for further investigation, **not confirmed buildable park sites**.
 
@@ -45,7 +43,7 @@ A reproducible GIS screening project identifying Washington, DC census block gro
 
 All analytical layers were prepared in **NAD83 / Maryland (EPSG:26985)**, with distances measured in meters. The preparation process included filtering the parks layer to 147 usable polygons, preparing 571 block groups, joining ACS population estimates, and checking numeric population fields and spatial references.
 
-**Reproducibility note:** Add the exact source URLs, ACS table/variable identifiers, download dates, and filtering criteria here before presenting the repository as fully reproducible. Source data and geodatabases may be excluded from version control because of size or licensing considerations.
+**Reproducibility note:** Exact source URLs, ACS table/variable identifiers, download dates, and filtering criteria should be documented before presenting the repository as fully reproducible. Source data and geodatabases may be excluded from version control because of size or licensing considerations.
 
 ## Analysis Workflow
 
@@ -78,7 +76,7 @@ Normalize population density and distance relative to the **maximum observed val
 ```text
 Density score  = 100 × (candidate density / maximum candidate density)
 Distance score = 100 × (candidate distance / maximum candidate distance)
-Priority score = 0.70 × Density score + 0.30 × Distance score
+Priority score = 0.60 × Density score + 0.40 × Distance score
 ```
 
 This is **maximum-based scaling**, not min-max normalization. The weights express a planning assumption, not an empirically validated optimum. Scores can change if the candidate set or weights change.
@@ -97,23 +95,33 @@ Key benefits include consistent parameters, repeatable processing, visible depen
 
 ![ModelBuilder workflow overview](screenshots/modelbuilder_workflow.png)
 
-*Replace this image with a readable, tightly cropped overview. If the complete model is too dense, use two or three detailed screenshots in the `screenshots/` folder and link to them below.*
+*The ModelBuilder overview screenshot will be refined in a later presentation update.*
 
 <!-- Optional detail images after capturing them:
 ![ModelBuilder: screening and candidate generation](screenshots/modelbuilder_screening.png)
 ![ModelBuilder: scoring and ranking](screenshots/modelbuilder_scoring.png)
 -->
 
+## ArcPy Automation and Validation
+
+The analysis was also implemented in an ArcGIS Pro Python notebook using ArcPy. The notebook documents the spatial screening, population and density calculations, proximity analysis, weighted scoring, and final ranking.
+
+The ArcPy results were validated against the ModelBuilder output using census block-group GEOIDs. Both approaches produced matching priority locations and scoring results.
+
+**[View the completed ArcPy analysis notebook](arcpy/DC_Park_Accessibility_Analysis.ipynb)**
+
+The notebook includes a clickable Table of Contents, analytical workflow, validation checks, results, limitations, and conclusions.
+
 ## Results
 
 Four populated block groups were ranked as preliminary park-planning priorities.
 
-| Priority rank | Approx. priority score |
-|---:|---:|
-| 1 | 87.69 |
-| 2 | 65.11 |
-| 3 | 62.52 |
-| 4 | 57.57 |
+| Priority rank | Census block-group GEOID | Approx. priority score |
+|---:|---|---:|
+| 1 | `110010082002` | 87.70 |
+| 2 | `110010022023` | 65.12 |
+| 3 | `110010095102` | 62.53 |
+| 4 | `110010022021` | 57.58 |
 
 The representative priority points are approximately **967–1,397 meters** from their nearest usable park polygons. These point-to-park distances should not be interpreted as walking distances or as the minimum distance from every location within each block group.
 
@@ -123,7 +131,7 @@ The representative priority points are approximately **967–1,397 meters** from
 - **Geographic screening:** Only block groups entirely outside buffers are selected; partially covered block groups are not evaluated for their uncovered populations.
 - **Population distribution:** Block-group totals do not show where individual residents live within each polygon.
 - **Park definition:** Results depend on which source park features are considered usable and whether public access is accurately represented.
-- **Scoring assumptions:** A 70/30 weighting and maximum-based normalization are scenario choices; sensitivity testing is needed.
+- **Scoring assumptions:** A 60/40 weighting and maximum-based normalization are scenario choices; sensitivity testing is needed.
 - **Site feasibility:** Priority points do not identify vacant, publicly owned, appropriately zoned, or otherwise feasible construction parcels.
 - **Data vintage:** Population estimates and park inventories may reflect different reporting periods.
 
@@ -134,13 +142,12 @@ Potential improvements include **walkable street-network service areas**, park e
 ```text
 DC_Park_Accessibility_Planner/
 ├── arcgis_pro/       # ArcGIS Pro project files, where shared
-├── arcpy/            # ArcPy automation and related scripts
+├── arcpy/            # ArcPy analysis notebook (generated geodatabase excluded)
 ├── data/             # Input/reference data or acquisition notes
 ├── docs/             # Methodology and supporting documentation
 ├── modelbuilder/     # ModelBuilder exports and documentation
 ├── outputs/          # Final map exports (PNG/PDF)
 ├── screenshots/      # ModelBuilder and workflow screenshots
-├── scripts/          # Supporting utilities
 ├── .gitignore
 └── README.md
 ```
@@ -153,16 +160,14 @@ The presence of a folder does not necessarily mean its automation or documentati
 2. Obtain the source parks, boundary, block-group, and ACS population datasets; document their exact versions and download sources.
 3. Project analysis features to **EPSG:26985** and join population data to the correct block-group identifiers.
 4. Apply the documented usable-park filter and validate input feature counts.
-5. Run the ModelBuilder workflow using an **800-meter** buffer distance.
+5. Run the ModelBuilder workflow using an **800-meter** buffer distance, or review and configure the [ArcPy notebook](arcpy/DC_Park_Accessibility_Analysis.ipynb) with the appropriate local data paths.
 6. Validate the six underserved block groups, four populated candidates, calculated scores, and map outputs.
 
-**Status:** The ArcGIS Pro/ModelBuilder analysis and cartographic exports are complete. Script-based reproduction instructions will be expanded when the ArcPy implementation is included in the repository.
+**Status:** The ArcGIS Pro/ModelBuilder analysis, ArcPy notebook, cross-validation, and cartographic exports are complete. Independent execution requires the source spatial datasets and configuration of local data paths.
 
 ## Project Repository
 
 [DC Park Accessibility Planner on GitHub](https://github.com/namozhdehi/DC_Park_Accessibility_Planner)
-
-
 
 ## ArcGIS Pro Project Dependencies
 
@@ -178,7 +183,6 @@ The repository includes ACS population data and final cartographic outputs, but 
 2. Open `arcgis_pro/DC_Park_Accessibility_Planner.aprx` in ArcGIS Pro.
 3. If layers display broken data-source links, reconnect them to the appropriate local datasets.
 4. Review the ModelBuilder toolbox in `modelbuilder/DC_Park_Accessibility_Planner.atbx`.
+5. Review the [ArcPy analysis notebook](arcpy/DC_Park_Accessibility_Analysis.ipynb) and configure its local data paths before running it.
 
-The project currently serves as a documented GIS portfolio artifact rather than a fully self-contained executable package.
-
-A future ArcPy implementation will support parameterized processing and improve reproducibility.
+The project currently serves as a documented GIS portfolio artifact rather than a fully self-contained executable package. The completed ArcPy notebook provides an additional repeatable implementation and validation of the analytical workflow.
