@@ -161,3 +161,24 @@ The presence of a folder does not necessarily mean its automation or documentati
 ## Project Repository
 
 [DC Park Accessibility Planner on GitHub](https://github.com/namozhdehi/DC_Park_Accessibility_Planner)
+
+
+
+## ArcGIS Pro Project Dependencies
+
+The repository includes the ArcGIS Pro project (`.aprx`) and ModelBuilder toolbox (`.atbx`) for reviewing the GIS workflow.
+
+The original working project uses an Esri file geodatabase named `DC_Park_Accessibility_Planner.gdb`, which is excluded from GitHub to avoid committing generated spatial datasets and temporary geodatabase files.
+
+The repository includes ACS population data and final cartographic outputs, but it does not currently contain every spatial input and intermediate feature class required to execute the model independently.
+
+### Opening the Project
+
+1. Download or clone this repository.
+2. Open `arcgis_pro/DC_Park_Accessibility_Planner.aprx` in ArcGIS Pro.
+3. If layers display broken data-source links, reconnect them to the appropriate local datasets.
+4. Review the ModelBuilder toolbox in `modelbuilder/DC_Park_Accessibility_Planner.atbx`.
+
+The project currently serves as a documented GIS portfolio artifact rather than a fully self-contained executable package.
+
+A future ArcPy implementation will support parameterized processing and improve reproducibility.
