@@ -186,3 +186,7 @@ The repository includes ACS population data and final cartographic outputs, but 
 5. Review the [ArcPy analysis notebook](arcpy/DC_Park_Accessibility_Analysis.ipynb) and configure its local data paths before running it.
 
 The project currently serves as a documented GIS portfolio artifact rather than a fully self-contained executable package. The completed ArcPy notebook provides an additional repeatable implementation and validation of the analytical workflow.
+
+For detailed dataset descriptions, official source URLs, data preparation,
+coordinate systems, and reproducibility notes, see the
+[Data Sources and Preparation](docs/Data_Sources.md) documentation.
