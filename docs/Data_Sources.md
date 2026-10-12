@@ -19,10 +19,25 @@ The repository includes these ACS files in `data/`:
 
 ## Data preparation
 
-1. **Parks:** Added the DC GIS parks web layer and exported a local working copy (`DC_Parks_Raw`). The original source contained **252** records. The analysis ultimately used **147** park features after project-specific filtering and preparation; consult the ArcGIS workflow and notebook for the exact implemented criteria.
+1. **Parks:** Added the DC GIS parks web layer and exported a local working copy (`DC_Parks_Raw`). The original source contained **252** records. Used **Select Layer By Attribute** with `NEW_SELECTION` to select four park-use categories:
+
+   ```sql
+   USE_TYPE IN (
+       'PARK',
+       'SMALL PARK',
+       'LARGE PARK',
+       'REC CENTER GROUNDS'
+   )
+   ```
+
+   The selection returned **147 park polygons**, which were used as the existing usable parks for the accessibility analysis. These categories represent a project-specific planning assumption and do not independently verify public access or recreational suitability. The filtering operation was recorded in ArcGIS Pro Geoprocessing History on **October 8, 2026**.
+
 2. **DC boundary:** Selected the District of Columbia county-equivalent from TIGERweb using state FIPS **11** and exported a single polygon. Projected the working boundary to **EPSG:26985**.
+
 3. **Block groups:** Selected DC block groups from TIGERweb using state FIPS **11** and exported **571** block groups for local analysis.
+
 4. **Population:** Used ACS B01003 total-population data, matched to census geography using geographic identifiers, and calculated population density for priority scoring.
+
 5. **Coordinate system:** Performed local spatial analysis in **NAD 1983 StatePlane Maryland FIPS 1900 (Meters), EPSG:26985**.
 
 ## Accessibility and prioritization
