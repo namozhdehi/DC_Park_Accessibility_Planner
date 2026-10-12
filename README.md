@@ -52,7 +52,7 @@ Select any of the four ranked priority locations to zoom to its location on the 
 
 All analytical layers were prepared in **NAD83 / Maryland (EPSG:26985)**, with distances measured in meters. The preparation process included filtering the parks layer to 147 usable polygons, preparing 571 block groups, joining ACS population estimates, and checking numeric population fields and spatial references.
 
-**Reproducibility note:** Exact source URLs, ACS table/variable identifiers, download dates, and filtering criteria should be documented before presenting the repository as fully reproducible. Source data and geodatabases may be excluded from version control because of size or licensing considerations.
+**Data provenance and reproducibility:** Official GIS service URLs, the 2024 ACS 5-Year B01003 population dataset, coordinate system, data preparation steps, and known limitations are documented in [Data Sources and Preparation](docs/Data_Sources.md). The repository includes the ACS reference files but excludes local geodatabases and some spatial inputs. Full independent reproduction requires obtaining those datasets, configuring local paths, and verifying the exact park-filtering criteria and source-data vintages.
 
 ## Analysis Workflow
 
