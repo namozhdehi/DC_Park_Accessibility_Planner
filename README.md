@@ -6,10 +6,6 @@ A reproducible GIS screening project identifying Washington, DC census block gro
 
 **Tools:** ArcGIS Pro · ModelBuilder · ArcPy · Python · Pandas · GIS geoprocessing · U.S. Census/ACS data · GitHub
 
-## Final Map
-
-![Washington, DC park accessibility and priority map](outputs/DC_Park_Accessibility_Final.png)
-
 ### Interactive Web Application
 
 Explore the results in the live ArcGIS Experience Builder application:
@@ -17,6 +13,11 @@ Explore the results in the live ArcGIS Experience Builder application:
 [Launch Interactive Park Priority Planner](https://experience.arcgis.com/experience/ff57671b0d8247e7b73cbd19a27c2532)
 
 Select any of the four ranked priority locations to zoom to its location on the map and explore the analysis.
+
+## Final Map
+
+![Washington, DC park accessibility and priority map](outputs/DC_Park_Accessibility_Final.png)
+
 
 ## At a Glance
 
